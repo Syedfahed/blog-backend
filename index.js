@@ -17,7 +17,7 @@ const port = process.env.SERVER //repalce with your URL;
 // MongoDB connection
 dbConnection();
 // routers
-
+app.get('/',(req,res)=>res.send('Runing'))
 app.use("/api/", router);
 
 // Start the server
