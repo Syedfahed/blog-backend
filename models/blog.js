@@ -16,8 +16,14 @@ const blogPost = new mongoose.Schema({
   postDate: {
     type: String,
   },
-  userID:{
-    type:String,
+  userID: {
+    type: String,
+  },
+  image: {
+    type: String,
+  },
+  slug:{
+    type:String
   }
 });
 module.exports = mongoose.model("blogs", blogPost);

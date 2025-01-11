@@ -1,10 +1,8 @@
 // # Controller files (business logic)
 
-const { mongoose } = require("mongoose");
 const users = require("../models/users");
 const jwt = require("jsonwebtoken");
 const blog = require("../models/blog");
-
 module.exports = {
   createUser: async (req, res) => {
     const emailExists = await users.findOne({ email: req.body.email });
@@ -74,7 +72,7 @@ module.exports = {
   },
   getBlogs: async (req, res) => {
     try {
-       blogPost = await blog.find()
+      blogPost = await blog.find();
       res.status(200).send({
         data: {
           success: 1,
@@ -85,9 +83,8 @@ module.exports = {
       res.status(500).send(error);
     }
   },
-  getBlogsByID : async (req,res)=>{
+  getBlogsByID: async (req, res) => {
     console.log(req.params.id);
-    
     try {
       const user = await blog.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -101,23 +98,78 @@ module.exports = {
       res.status(400).send(error);
     }
   },
-  getBlogsUsers : async (req,res)=>{
-    const userID = req.body.userID
+  getBlogsUsers: async (req, res) => {
+    const userID = req.body.userID;
     // console.log(userID);
-    
     try {
-      const user = await blog.find({userID:userID})
+      const user = await blog.find({ userID: userID });
       if (!user) {
         return res.status(404).send();
       }
       res.send({
-        success:1,
-        data:user
+        success: 1,
+        data: user,
       });
     } catch (error) {
       console.log(error);
-      
+
       res.status(400).send(error);
     }
-  }
+  },
+  blogDelete: async (req, res) => {
+    const slug = req.body.slug;
+    // console.log(userID);
+    try {
+      const user = await blog.deleteOne({ slug: slug });
+      if (!user) {
+        return res.status(404).send();
+      }
+      res.send({
+        success: 1,
+        data: user,
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(400).send(error);
+    }
+  },
+  getSingleBlog: async (req, res) => {
+    const slug = req.params.slug;
+    try {
+      const getBlog = await blog.findOne({ slug: slug });
+      if (!getBlog) {
+        return res.status(404).send();
+      }
+      res.send({
+        success: 1,
+        data: getBlog,
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(400).send(error);
+    }
+  },
+  updateBlog: async (req, res) => {
+    const title = req.body.title;
+    const description = req.body.description;
+    const slug = req.params.slug;
+    try {
+      const getBlog = await blog.findOneAndUpdate({ slug: slug }, req.body, {
+        new: true,
+      });
+      if (!getBlog) {
+        return res.status(404).send();
+      }
+      res.send({
+        success: 1,
+        data: getBlog,
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(400).send(error);
+    }
+  },
 };
