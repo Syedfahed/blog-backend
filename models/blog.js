@@ -17,9 +17,7 @@ const blogPost = new mongoose.Schema({
     type: String,
   },
   userID:{
-    type:Number,
-    default:()=>1,
-    unique:1
+    type:String,
   }
 });
 module.exports = mongoose.model("blogs", blogPost);
